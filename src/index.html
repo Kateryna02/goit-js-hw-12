@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body class="fist-page">
-   <header>
-     <ul>
-        <li class="title"><a href="./page-2.html">Gallery</a></li>
-       
-    </ul>
+     
+    <form id="form">
+        <label for="input"></label>
+        <input name="search" type="text" id="input">
+        <button type="submit">Search</button>
+    </form>
+    <ul class="gallery"></ul>
+   <div class="loader is-hidden"></div>
+   <button id="loadmoreBtn" class="loadmoreBtn is-hidden">load more</button>
       <script type="module"
             src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
     <script type="module" src="./main.js"></script>
