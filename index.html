@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     
-  <script type="module" crossorigin src="/goit-js-hw-11/assets/vendor-2618a76b.js"></script>
-  <script type="module" crossorigin src="/goit-js-hw-11/assets/main-87553ff7.js"></script>
-  <link rel="stylesheet" href="/goit-js-hw-11/assets/vendor-fd638ea2.css">
-  <link rel="stylesheet" href="/goit-js-hw-11/assets/main-885eefca.css">
+  <script type="module" crossorigin src="/goit-js-hw-12/assets/vendor-2618a76b.js"></script>
+  <script type="module" crossorigin src="/goit-js-hw-12/assets/main-cc1d1489.js"></script>
+  <link rel="stylesheet" href="/goit-js-hw-12/assets/vendor-fd638ea2.css">
+  <link rel="stylesheet" href="/goit-js-hw-12/assets/main-885eefca.css">
 </head>
 <body class="fist-page">
-   <header>
-     <ul>
-        <li class="title"><a href="./page-2.html">Gallery</a></li>
-       
-    </ul>
+     
+    <form id="form">
+        <label for="input"></label>
+        <input name="search" type="text" id="input">
+        <button type="submit">Search</button>
+    </form>
+    <ul class="gallery"></ul>
+   <div class="loader is-hidden"></div>
+   <button id="loadmoreBtn" class="loadmoreBtn is-hidden">load more</button>
       <script type="module"
             src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
     
