@@ -16,12 +16,13 @@ const form = document.getElementById('form');
 const loader = document.querySelector('.loader');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 const addImput = document.getElementById('input');
-const music = document.querySelector('.music');
+// const music = document.querySelector('.music');
 
 let currentPage = 1;
 let perPage = 40;
 let searchQuery = null;
 loadMoreBtn.addEventListener('click', onLoadMore);
+
 
 
 form.addEventListener('submit', async (e) => {
@@ -33,7 +34,7 @@ form.addEventListener('submit', async (e) => {
 
     if (searchQuery !== '') {
         try {
-            music.play();
+            // music.play();
             const data = await fetchImages(searchQuery, currentPage);
             if (data.hits.length > 0) {
                 gallery(data.hits);
@@ -49,22 +50,22 @@ form.addEventListener('submit', async (e) => {
                     backgroundColor: '#EF4040',
                     maxWidth: 500
                 });
-                stopAudio();
+                // stopAudio();
             }
 
         } catch (error) {
             console.error('Error fetching data:', error);
-            stopAudio();
+            // stopAudio();
         } finally {
-            // loader.classList.add('is-hidden');
+            loader.classList.add('is-hidden');
         }
         addImput.value = '';
     }
 });
-function stopAudio() {
-    music.pause();
-    music.currentTime = 0;
-}
+// function stopAudio() {
+//     music.pause();
+//     music.currentTime = 0;
+// }
 
 
 
