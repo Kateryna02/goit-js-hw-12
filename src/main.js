@@ -16,6 +16,7 @@ const form = document.getElementById('form');
 const loader = document.querySelector('.loader');
 const loadMoreBtn = document.querySelector('.load-more-btn');
 const addImput = document.getElementById('input');
+const music = document.querySelector('.music');
 
 let currentPage = 1;
 let perPage = 40;
@@ -32,6 +33,7 @@ form.addEventListener('submit', async (e) => {
 
     if (searchQuery !== '') {
         try {
+            music.play();
             const data = await fetchImages(searchQuery, currentPage);
             if (data.hits.length > 0) {
                 gallery(data.hits);
@@ -47,16 +49,22 @@ form.addEventListener('submit', async (e) => {
                     backgroundColor: '#EF4040',
                     maxWidth: 500
                 });
+                stopAudio();
             }
 
         } catch (error) {
             console.error('Error fetching data:', error);
+            stopAudio();
         } finally {
             // loader.classList.add('is-hidden');
         }
         addImput.value = '';
     }
 });
+function stopAudio() {
+    music.pause();
+    music.currentTime = 0;
+}
 
 
 
