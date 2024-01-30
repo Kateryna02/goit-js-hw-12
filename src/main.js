@@ -14,61 +14,80 @@ const modal = new SimpleLightbox('.gallery a', {
 const galleryContainer = document.querySelector('.gallery');
 const form = document.getElementById('form');
 const loader = document.querySelector('.loader');
-const loadMoreBtn = document.querySelector('loadmoreBtn');
+const loadMoreBtn = document.querySelector('.load-more-btn');
+const addImput = document.getElementById('input');
 
 let currentPage = 1;
-let perPage = 20;
+let perPage = 40;
+let searchQuery = null;
+loadMoreBtn.addEventListener('click', onLoadMore);
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     loader.classList.remove('is-hidden');
     galleryContainer.innerHTML = "";
-    const keyword = e.currentTarget.elements.search.value.trim();
+    currentPage = 1;
+    searchQuery = e.currentTarget.elements.search.value.trim();
 
-    if (keyword !== '') {
+    if (searchQuery !== '') {
         try {
-            const data = await fetchImages(keyword);
+            const data = await fetchImages(searchQuery, currentPage);
             if (data.hits.length > 0) {
                 gallery(data.hits);
-              
+                loadMoreBtn.classList.remove('is-hidden')
+
             } else {
+                loadMoreBtn.classList.add('is-hidden')
                 iziToast.error({
                     title: 'error',
                     message: 'Sorry, there are no images matching your search query. Please try again!',
                     position: 'topRight',
                     messageColor: 'white',
                     backgroundColor: '#EF4040',
+                    maxWidth: 500
                 });
             }
+
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
-            loader.classList.add('is-hidden');
+            // loader.classList.add('is-hidden');
         }
+        addImput.value = '';
     }
 });
 
-// loadMoreBtn.addEventListener('click', onLoadMore);
+
 
 async function onLoadMore() {
     loader.classList.remove('is-hidden');
-    const keyword = form.elements.search.value.trim();
+    currentPage += 1;
     try {
-        const data = await fetchImages(keyword, currentPage);
+        const data = await fetchImages(searchQuery, currentPage);
+
         if (data.hits.length > 0) {
             gallery(data.hits);
-            currentPage += 1;
+
         } else {
             iziToast.error({
                 title: 'error',
-                message: 'Sorry, there are no images matching your search query. Please try again!',
+                message: "We're sorry, but you've reached the end of search results.",
                 position: 'topRight',
                 messageColor: 'white',
                 backgroundColor: '#EF4040',
+                maxWidth: 500
             });
+
             loadMoreBtn.classList.add('is-hidden');
         }
-    } catch (error) {
+        const galleryContainerHeight = galleryContainer.getBoundingClientRect().height;
+        window.scrollBy({
+            top: galleryContainerHeight,
+            behavior: "smooth",
+        });
+    }
+    catch (error) {
         console.error('Error fetching data:', error);
     } finally {
         loader.classList.add('is-hidden');
@@ -119,7 +138,7 @@ const galleryItem = ({ webformatURL, largeImageURL, tags, likes, views, comments
 
 const gallery = (hits) => {
     const galleryItemHtml = hits.map(galleryItem).join('');
-    galleryContainer.innerHTML = galleryItemHtml;
+    galleryContainer.insertAdjacentHTML('beforeend', galleryItemHtml);
     modal.refresh();
 };
 
