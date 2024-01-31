@@ -21,27 +21,32 @@ const addImput = document.getElementById('input');
 let currentPage = 1;
 let perPage = 40;
 let searchQuery = null;
+let maxPage = 0;
 loadMoreBtn.addEventListener('click', onLoadMore);
-
-
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    loader.classList.remove('is-hidden');
     galleryContainer.innerHTML = "";
     currentPage = 1;
     searchQuery = e.currentTarget.elements.search.value.trim();
 
     if (searchQuery !== '') {
+         loader.classList.remove('is-hidden');
         try {
             // music.play();
             const data = await fetchImages(searchQuery, currentPage);
+            maxPage = Math.ceil(data.totalHits / 40);
             if (data.hits.length > 0) {
                 gallery(data.hits);
-                loadMoreBtn.classList.remove('is-hidden')
+                loadMoreBtn.classList.remove('is-hidden');
+
+                if (currentPage >= maxPage) {
+                    loadMoreBtn.classList.add('is-hidden');
+                  
+                }
+                
 
             } else {
-                loadMoreBtn.classList.add('is-hidden')
                 iziToast.error({
                     title: 'error',
                     message: 'Sorry, there are no images matching your search query. Please try again!',
@@ -51,14 +56,14 @@ form.addEventListener('submit', async (e) => {
                     maxWidth: 500
                 });
                 // stopAudio();
+                loadMoreBtn.classList.add('is-hidden');
+                loader.classList.add('is-hidden');
             }
 
         } catch (error) {
             console.error('Error fetching data:', error);
             // stopAudio();
-        } finally {
-            loader.classList.add('is-hidden');
-        }
+        } 
         addImput.value = '';
     }
 });
@@ -74,11 +79,10 @@ async function onLoadMore() {
     currentPage += 1;
     try {
         const data = await fetchImages(searchQuery, currentPage);
+        gallery(data.hits)
 
-        if (data.hits.length > 0) {
-            gallery(data.hits);
-
-        } else {
+        if (currentPage >= maxPage) {
+           
             iziToast.error({
                 title: 'error',
                 message: "We're sorry, but you've reached the end of search results.",
@@ -102,6 +106,7 @@ async function onLoadMore() {
         loader.classList.add('is-hidden');
     }
 }
+
 
 async function fetchImages(keyword, currentPage) {
     const key = '42039867-09e41a1320e593858871044dc';
