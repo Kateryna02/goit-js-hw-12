@@ -29,6 +29,7 @@ form.addEventListener('submit', async (e) => {
     galleryContainer.innerHTML = "";
     currentPage = 1;
     searchQuery = e.currentTarget.elements.search.value.trim();
+    
 
     if (searchQuery !== '') {
          loader.classList.remove('is-hidden');
@@ -65,6 +66,8 @@ form.addEventListener('submit', async (e) => {
             // stopAudio();
         } 
         addImput.value = '';
+     
+        
     }
 });
 // function stopAudio() {
